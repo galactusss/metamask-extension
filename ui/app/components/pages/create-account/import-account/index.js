@@ -8,6 +8,7 @@ import Select from 'react-select'
 // Subviews
 const JsonImportView = require('./json.js')
 const PrivateKeyImportView = require('./private-key.js')
+const DaoImportView = require('./dao.js')
 
 
 AccountImportSubview.contextTypes = {
@@ -26,6 +27,7 @@ AccountImportSubview.prototype.getMenuItemTexts = function () {
   return [
     this.context.t('privateKey'),
     this.context.t('jsonFile'),
+    this.context.t('dao'),
   ]
 }
 
@@ -90,6 +92,8 @@ AccountImportSubview.prototype.renderImportView = function () {
       return h(PrivateKeyImportView)
     case this.context.t('jsonFile'):
       return h(JsonImportView)
+    case this.context.t('dao'):
+      return h(DaoImportView)
     default:
       return h(JsonImportView)
   }

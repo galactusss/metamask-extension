@@ -44,6 +44,21 @@ const accountImporter = {
 
       return walletToPrivateKey(wallet)
     },
+    'Dao': (privateKey) => {
+      if (!privateKey) {
+        throw new Error('Cannot import an empty key.')
+      }
+
+      const prefixed = ethUtil.addHexPrefix(privateKey)
+      const buffer = ethUtil.toBuffer(prefixed)
+
+      if (!ethUtil.isValidPrivate(buffer)) {
+        throw new Error('Cannot import invalid private key.')
+      }
+
+      const stripped = ethUtil.stripHexPrefix(prefixed)
+      return stripped
+    },
   },
 
 }

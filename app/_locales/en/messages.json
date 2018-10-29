@@ -816,6 +816,10 @@
     "message": "Private Key",
     "description": "select this type of file to use to import an account"
   },
+  "dao": {
+    "message": "Dao",
+    "description": "select this type of file to use to import an account"
+  },
   "privateKeyWarning": {
     "message": "Warning: Never disclose this key. Anyone with your private keys can steal any assets held in your account."
   },

@@ -2,8 +2,34 @@
 
 ## Current Develop Branch
 
-- [#5563](https://github.com/MetaMask/metamask-extension/pull/5563#pullrequestreview-166769174) Feature: improve Hatian Creole translations
+## 5.0.2 Friday November 9 2018
+
+- Fixed bug that caused accounts to update slowly to sites. #5717
+- Fixed bug that could lead to some sites crashing. #5709
+
+## 5.0.1 Wednesday November 7 2018
+
+- Fixed bug in privacy mode that made it not work correctly on Firefox.
+
+## 5.0.0 Tuesday November 6 2018
+
+- Implements EIP 1102 as a user-activated "Privacy Mode".
+
+## 4.17.1 Saturday November 3 2018
+
+- Revert chain ID lookup change which introduced a bug which caused problems when connecting to mainnet via Infura's RESTful API.
+
+## 4.17.0 Thursday November 1 2018
+
+- Fix bug where data lookups like balances would get stale data (stopped block-tracker bug)
+- Transaction Details now show entry for onchain failure
 - [#5559](https://github.com/MetaMask/metamask-extension/pull/5559) Localize language names in translation select list
+- [#5283](https://github.com/MetaMask/metamask-extension/pull/5283): Fix bug when eth.getCode() called with no contract
+- [#5563](https://github.com/MetaMask/metamask-extension/pull/5563#pullrequestreview-166769174) Feature: improve Hatian Creole translations
+- Feature: improve Slovenian translations
+- Add support for alternate `wallet_watchAsset` rpc method name
+- Attempt chain ID lookup via `eth_chainId` before `net_version`
+- Fix account display width for large currency values
 
 ## 4.16.0 Wednesday October 17 2018
 

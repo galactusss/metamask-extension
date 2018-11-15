@@ -4,10 +4,10 @@ const ethUtil = require('ethereumjs-util')
 
 const accountImporter = {
 
-  importAccount (strategy, args) {
+  async importAccount (strategy, args) {
     try {
       const importer = this.strategies[strategy]
-      const privateKeyHex = importer.apply(null, args)
+      const privateKeyHex = await importer.apply(null, args)
       return Promise.resolve(privateKeyHex)
     } catch (e) {
       return Promise.reject(e)
@@ -15,7 +15,7 @@ const accountImporter = {
   },
 
   strategies: {
-    'Private Key': (privateKey) => {
+    'Private Key': async (privateKey, keyringController) => {
       if (!privateKey) {
         throw new Error('Cannot import an empty key.')
       }
@@ -28,9 +28,9 @@ const accountImporter = {
       }
 
       const stripped = ethUtil.stripHexPrefix(prefixed)
-      return stripped
+      return await keyringController.addNewKeyring('Simple Key Pair', [ stripped ])
     },
-    'JSON File': (input, password) => {
+    'JSON File': async (input, password, keyringController) => {
       let wallet
       try {
         wallet = importers.fromEtherWallet(input, password)
@@ -42,22 +42,15 @@ const accountImporter = {
         wallet = Wallet.fromV3(input, password, true)
       }
 
-      return walletToPrivateKey(wallet)
+      return await keyringController.addNewKeyring('Simple Key Pair', [ walletToPrivateKey(wallet) ])
     },
-    'Dao': (privateKey) => {
-      if (!privateKey) {
-        throw new Error('Cannot import an empty key.')
-      }
-
-      const prefixed = ethUtil.addHexPrefix(privateKey)
-      const buffer = ethUtil.toBuffer(prefixed)
-
-      if (!ethUtil.isValidPrivate(buffer)) {
-        throw new Error('Cannot import invalid private key.')
-      }
-
-      const stripped = ethUtil.stripHexPrefix(prefixed)
-      return stripped
+    'Dao': async (ens, dao, forwarding, parent, keyringController) => {
+      return await keyringController.addNewKeyring('Aragon Key', {
+        'ens': ens,
+        'dao': dao,
+        'forwardingAddress': forwarding,
+        'parentAddress': parent
+      })
     },
   },
 

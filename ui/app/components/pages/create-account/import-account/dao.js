@@ -49,13 +49,48 @@ DaoImportView.prototype.render = function () {
   return (
     h('div.new-account-import-form__private-key', [
 
-      h('span.new-account-create-form__instruction', this.context.t('pasteDaoAddress')),
+      h('span.new-account-create-form__instruction', this.context.t('pasteEnsAddress')),
 
-      h('div.new-account-import-form__private-key-password-container', [
+      h('div.new-account-import-form__ens-address-password-container', [
 
         h('input.new-account-import-form__input-password', {
-          type: 'password',
-          id: 'private-key-box',
+          type: 'text',
+          id: 'ens-box',
+          onKeyPress: e => this.createKeyringOnEnter(e),
+        }),
+
+      ]),
+
+      h('span.new-account-create-form__instruction', this.context.t('pasteParentAddress')),
+
+      h('div.new-account-import-form__parent-address-password-container', [
+
+        h('input.new-account-import-form__input-password', {
+          type: 'text',
+          id: 'parent-box',
+          onKeyPress: e => this.createKeyringOnEnter(e),
+        }),
+
+      ]),
+      h('span.new-account-create-form__instruction', this.context.t('pasteForwardingAddress')),
+
+      h('div.new-account-import-form__forwarding-address-password-container', [
+
+        h('input.new-account-import-form__input-password', {
+          type: 'text',
+          id: 'forwarding-box',
+          onKeyPress: e => this.createKeyringOnEnter(e),
+        }),
+
+      ]),
+
+      h('span.new-account-create-form__instruction', this.context.t('pasteDaoAddress')),
+
+      h('div.new-account-import-form__dao-address-password-container', [
+
+        h('input.new-account-import-form__input-password', {
+          type: 'text',
+          id: 'dao-box',
           onKeyPress: e => this.createKeyringOnEnter(e),
         }),
 
@@ -95,11 +130,13 @@ DaoImportView.prototype.createKeyringOnEnter = function (event) {
 }
 
 DaoImportView.prototype.createNewKeychain = function () {
-  const input = document.getElementById('private-key-box')
-  const privateKey = input.value
+  const dao = document.getElementById('dao-box').value
+  const ens = document.getElementById('ens-box').value
+  const forwarding = document.getElementById('forwarding-box').value
+  const parent = document.getElementById('parent-box').value
   const { importNewAccount, history, displayWarning, setSelectedAddress, firstAddress } = this.props
 
-  importNewAccount('Private Key', [ privateKey ])
+  importNewAccount('Dao', [ ens, dao, forwarding, parent])
     .then(({ selectedAddress }) => {
       if (selectedAddress) {
         history.push(DEFAULT_ROUTE)

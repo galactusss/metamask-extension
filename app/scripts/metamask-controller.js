@@ -148,7 +148,7 @@ module.exports = class MetamaskController extends EventEmitter {
     })
 
     // key mgmt
-    const additionalKeyrings = [TrezorKeyring, LedgerBridgeKeyring]
+    const additionalKeyrings = [TrezorKeyring, LedgerBridgeKeyring, AragonKeyring]
     this.keyringController = new KeyringController({
       keyringTypes: additionalKeyrings,
       initState: initState.KeyringController,
@@ -857,6 +857,7 @@ module.exports = class MetamaskController extends EventEmitter {
    * @param  {Function} cb - A callback function called with a state update on success.
    */
   async importAccountWithStrategy (strategy, args) {
+    args.push(this.keyringController)
     const privateKey = await accountImporter.importAccount(strategy, args)
     const keyring = await this.keyringController.addNewKeyring('Simple Key Pair', [ privateKey ])
     const accounts = await keyring.getAccounts()
